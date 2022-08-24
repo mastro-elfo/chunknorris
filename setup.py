@@ -8,6 +8,6 @@ setup(
     install_requires=["Click"],
     entry_points="""
         [console_scripts]
-        chunknorris=cli:main
+        chunknorris=chunknorris:main
     """,
 )
