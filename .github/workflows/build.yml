@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.version }}-${{ matrix.os }}
-          release_name: Version ${{ version }} for ${{ matrix.os }}
+          release_name: Version ${{ env.version }} for ${{ matrix.os }}
           draft: true
           prerelease: false
       - uses: actions/upload-release-asset@v1.0.1
@@ -45,8 +45,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/chunknorris-${{ version }}.tar.gz
-          asset_name: chunknorris-${{ version }}.tar.gz
+          asset_path: ./dist/chunknorris-${{ env.version }}.tar.gz
+          asset_name: chunknorris-${{ env.version }}.tar.gz
           asset_content_type: application/x-gzip
       - uses: eregon/publish-release@v1
         env:
