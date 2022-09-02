@@ -36,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ version }}-${{ matrix.os }}
+          tag_name: ${{ env.version }}-${{ matrix.os }}
           release_name: Version ${{ version }} for ${{ matrix.os }}
           draft: true
           prerelease: false
