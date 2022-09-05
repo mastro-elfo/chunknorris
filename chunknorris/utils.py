@@ -8,6 +8,18 @@ def split_extension(filename: str) -> tuple[str, str]:
     return ".".join(parts), extension
 
 
+def get_output_filename(
+    basename: str,
+    extension: str,
+    output_dir: str = "",
+    extra: int | str = "",
+    separator: str = "-",
+) -> str:
+    return os.path.join(
+        output_dir, f"{basename}{separator if extra else ''}{extra}.{extension}"
+    )
+
+
 def open_writer(
     basename: str,
     count: int,
@@ -17,7 +29,7 @@ def open_writer(
     header: str = "",
 ) -> TextIOWrapper:
     writer = open(
-        os.path.join(output_dir, f"{basename}{separator}{count}.{extension}"), "w"
+        get_output_filename(output_dir, basename, separator, count, extension), "w"
     )
     writer.write(header)
     return writer
