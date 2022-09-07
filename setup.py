@@ -1,5 +1,7 @@
-from importlib.metadata import entry_points
+"""Setup chunknorris module"""
+
 from setuptools import setup
+
 from chunknorris import __version__
 
 setup(

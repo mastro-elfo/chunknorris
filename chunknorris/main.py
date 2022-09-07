@@ -1,9 +1,12 @@
+"""Perform actions on files"""
+
 import os
 from typing import Optional
-import typer
-import rich
 
-from chunknorris.utils import open_writer, close_writer, split_extension
+import rich
+import typer
+
+from chunknorris.utils import close_writer, open_writer, split_extension
 
 app = typer.Typer()
 
@@ -13,13 +16,13 @@ def chunk(
     input_file: typer.FileText,
     breaking_line: str,
     occurrences: int,
-    header: Optional[str] = typer.Option("-", "--header", "-h"),
+    header: str = typer.Option("", "--header", "-h"),
     header_file: Optional[typer.FileText] = typer.Option(None, "--header-file", "-hf"),
-    footer: Optional[str] = typer.Option("", "--footer", "-f"),
+    footer: str = typer.Option("", "--footer", "-f"),
     footer_file: Optional[typer.FileText] = typer.Option(None, "--footer-file", "-ff"),
-    index: Optional[int] = typer.Option(1, "--index", "-i"),
-    separator: Optional[str] = typer.Option("-", "--separator", "-s"),
-    output_dir: Optional[str] = typer.Option("", "--output-dir", "-od"),
+    index: int = typer.Option(1, "--index", "-i"),
+    separator: str = typer.Option("-", "--separator", "-s"),
+    output_dir: str = typer.Option("", "--output-dir", "-od"),
 ):
     """Splits text file in chunks"""
 
@@ -27,12 +30,18 @@ def chunk(
     footer_content = footer_file.read() if footer_file else footer
 
     count_occurrences = 0
-    file_index = index
+    file_index = index if index is not None else 1
     basename, extension = split_extension(input_file.name)
 
-    writer_factory = lambda: open_writer(
-        basename, file_index, extension, separator, output_dir, header_content
-    )
+    def writer_factory():
+        return open_writer(
+            basename,
+            file_index,
+            extension,
+            separator,
+            output_dir,
+            header_content,
+        )
 
     writer = writer_factory()
 
@@ -54,6 +63,7 @@ def chunk(
 
 
 @app.command()
+# pylint: disable=redefined-builtin
 def filter(
     input_file: typer.FileText,
     block_tag: str,
@@ -67,7 +77,12 @@ def filter(
     basename, extension = split_extension(input_file.name)
 
     with open(
-        os.path.join(output_dir, f"{basename}{separator}{value}.{extension}"), "w"
+        os.path.join(
+            output_dir if output_dir else "",
+            f"{basename}{separator}{value}.{extension}",
+        ),
+        "w",
+        encoding="otf8",
     ) as fp:
         buffer: str = ""
         open_block_tag = f"<{block_tag}>"
@@ -77,25 +92,20 @@ def filter(
         in_block = False
         for line in input_file:
             if open_block_tag in line:
-                print("Open block", line)
                 buffer = line
                 in_block = True
             elif close_block_tag in line:
-                print("Close block", line)
                 if match_value:
                     buffer += line
                     fp.write(buffer)
                 buffer = ""
                 in_block = False
             elif open_tag in line:
-                print("Open tag", line)
                 buffer += line
                 match_value = value in line
             elif not in_block:
-                print("Not in block", line)
                 fp.write(line)
             else:
-                print("Else", line)
                 buffer += line
 
 
