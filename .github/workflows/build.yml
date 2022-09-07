@@ -32,11 +32,9 @@ jobs:
       - name: Build
         run: python setup.py bdist_egg
 
-      - name: Get release version
-        id: version
-        run: echo Version
-        env:
-          VERSION: $(python setup.py --version)
+      - name: Release version
+        id: release
+        run: echo "::set-output name=version::$(python setup.py --version)"
 
       - name: Create Draft Release
         id: create_release
@@ -44,8 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version.VERSION }}
-          release_name: Version ${{ steps.version.VERSION }}
+          tag_name: v${{ steps.release.output.version }}
+          release_name: Version ${{ steps.release.output.version }}
           draft: true
           prerelease: false
 
@@ -54,8 +52,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/chunknorris-${{ steps.version.VERSION }}-py${{ matrix.python-version }}.egg
-          asset_name: chunknorris-${{ steps.version.VERSION }}-py${{ matrix.python-version }}.egg
+          asset_path: ./dist/chunknorris-${{ steps.release.output.version }}-py${{ matrix.python-version }}.egg
+          asset_name: chunknorris-${{ steps.release.output.version }}-py${{ matrix.python-version }}.egg
           asset_content_type: application/zip
 
       - uses: eregon/publish-release@v1
