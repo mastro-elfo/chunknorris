@@ -34,7 +34,7 @@ jobs:
 
       - name: Get release version
         id: version
-        run: echo "Version: $VERSION"
+        run: echo Version
         env:
           VERSION: $(python setup.py --version)
 
