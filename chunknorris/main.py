@@ -83,7 +83,7 @@ def filter(
         ),
         "w",
         encoding="otf8",
-    ) as fp:
+    ) as writer:
         buffer: str = ""
         open_block_tag = f"<{block_tag}>"
         close_block_tag = f"</{block_tag}>"
@@ -97,14 +97,14 @@ def filter(
             elif close_block_tag in line:
                 if match_value:
                     buffer += line
-                    fp.write(buffer)
+                    writer.write(buffer)
                 buffer = ""
                 in_block = False
             elif open_tag in line:
                 buffer += line
                 match_value = value in line
             elif not in_block:
-                fp.write(line)
+                writer.write(line)
             else:
                 buffer += line
 
