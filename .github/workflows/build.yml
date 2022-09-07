@@ -42,8 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.release.output.version }}
-          release_name: Version ${{ steps.release.output.version }}
+          tag_name: v${{ steps.release.outputs.version }}
+          release_name: Version ${{ steps.release.outputs.version }}
           draft: true
           prerelease: false
 
@@ -52,8 +52,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/chunknorris-${{ steps.release.output.version }}-py${{ matrix.python-version }}.egg
-          asset_name: chunknorris-${{ steps.release.output.version }}-py${{ matrix.python-version }}.egg
+          asset_path: ./dist/chunknorris-${{ steps.release.outputs.version }}-py${{ matrix.python-version }}.egg
+          asset_name: chunknorris-${{ steps.release.outputs.version }}-py${{ matrix.python-version }}.egg
           asset_content_type: application/zip
 
       - uses: eregon/publish-release@v1
