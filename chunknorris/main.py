@@ -1,5 +1,6 @@
 """Perform actions on files"""
 
+import locale
 import os
 from typing import Optional
 
@@ -82,7 +83,7 @@ def filter(
             f"{basename}{separator}{value}.{extension}",
         ),
         "w",
-        encoding="otf8",
+        encoding=locale.getpreferredencoding(),
     ) as writer:
         buffer: str = ""
         open_block_tag = f"<{block_tag}>"

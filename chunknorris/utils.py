@@ -1,5 +1,6 @@
 # pylint: disable=missing-module-docstring
 
+import locale
 import os
 from io import TextIOWrapper
 
@@ -39,7 +40,7 @@ def open_writer(
     writer = open(
         get_output_filename(output_dir, basename, separator, count, extension),
         "w",
-        encoding="utf8",
+        encoding=locale.getpreferredencoding(),
     )
     writer.write(header)
     return writer
