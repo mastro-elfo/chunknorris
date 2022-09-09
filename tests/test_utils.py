@@ -1,14 +1,19 @@
+# pylint: disable=missing-module-docstring
+
 import os
 import re
+
 from chunknorris.utils import get_output_filename, split_extension
 
 
+# pylint: disable=missing-function-docstring
 def test_split_extension():
     name, ext = split_extension("test.file.name.ext")
     assert name == "test.file.name"
     assert ext == "ext"
 
 
+# pylint: disable=missing-function-docstring
 def test_get_output_filename():
     assert (
         get_output_filename(

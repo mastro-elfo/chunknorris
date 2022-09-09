@@ -63,9 +63,8 @@ def chunk(
     rich.print("[green]Done![/green]")
 
 
-@app.command()
-# pylint: disable=redefined-builtin
-def filter(
+@app.command("filter")
+def filter_command(
     input_file: typer.FileText,
     block_tag: str,
     tag: str,
