@@ -7,7 +7,12 @@ from typing import Optional
 import rich
 import typer
 
-from chunknorris.utils import close_writer, open_writer, split_extension
+from chunknorris.utils import (
+    close_writer,
+    open_writer,
+    remove_white_spaces,
+    split_extension,
+)
 
 app = typer.Typer()
 
@@ -107,6 +112,40 @@ def filter_command(
                 writer.write(line)
             else:
                 buffer += line
+
+
+@app.command()
+def oneline(
+    input_file: typer.FileText,
+    carriage_return: Optional[bool] = typer.Option(
+        True, "--carriage-return/--no-carriage-return", "-cr/-nocr"
+    ),
+    line_feed: Optional[bool] = typer.Option(
+        True, "--line-feed/--no-line-feed", "-lf/-nolf"
+    ),
+    tab: Optional[bool] = typer.Option(True, "--tab/--no-tab", "-t/-not"),
+    space: Optional[bool] = typer.Option(True, "--space/--no-space", "-s/-nos"),
+    strip: Optional[bool] = typer.Option(True, "--strip/--no-strip", "-st/-nost"),
+):
+    """Remove whitespaces from file"""
+
+    basename, extension = split_extension(input_file.name)
+
+    with open(
+        f"{basename}.oneline.{extension}",
+        "w",
+        encoding=locale.getpreferredencoding(),
+    ) as writer:
+        writer.write(
+            remove_white_spaces(
+                input_file.read(),
+                carriage_return=carriage_return,
+                line_feed=line_feed,
+                tab=tab,
+                space=space,
+                strip=strip,
+            )
+        )
 
 
 if __name__ == "__main__":
