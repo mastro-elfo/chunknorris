@@ -7,6 +7,7 @@ from typing import Optional
 import rich
 import typer
 
+from chunknorris.safe import app as safe_app
 from chunknorris.utils import (
     close_writer,
     open_writer,
@@ -147,6 +148,8 @@ def oneline(
             )
         )
 
+
+app.add_typer(safe_app, name="safe")
 
 if __name__ == "__main__":
     app()
