@@ -17,6 +17,8 @@ from chunknorris.utils import (
 
 app = typer.Typer()
 
+# TEST
+
 
 @app.command()
 def chunk(
