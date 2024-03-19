@@ -1,4 +1,4 @@
-"""Perform actions on files"""
+# pylint: disable=missing-module-docstring
 
 import locale
 import os
@@ -17,10 +17,9 @@ from chunknorris.utils import (
 
 app = typer.Typer()
 
-# TEST
-
 
 @app.command()
+# pylint: disable=too-many-arguments,too-many-locals
 def chunk(
     input_file: typer.FileText,
     breaking_line: str,
@@ -33,7 +32,7 @@ def chunk(
     separator: str = typer.Option("-", "--separator", "-s"),
     output_dir: str = typer.Option("", "--output-dir", "-od"),
 ):
-    """Splits text file in chunks"""
+    """Splits text file into chunks"""
 
     header_content = header_file.read() if header_file else header
     footer_content = footer_file.read() if footer_file else footer
@@ -72,6 +71,7 @@ def chunk(
 
 
 @app.command("filter")
+# pylint: disable=too-many-arguments,too-many-locals
 def filter_command(
     input_file: typer.FileText,
     block_tag: str,
@@ -118,6 +118,7 @@ def filter_command(
 
 
 @app.command()
+# pylint: disable=too-many-arguments
 def oneline(
     input_file: typer.FileText,
     carriage_return: Optional[bool] = typer.Option(
@@ -153,5 +154,11 @@ def oneline(
 
 app.add_typer(safe_app, name="safe")
 
-if __name__ == "__main__":
+
+# pylint: disable=missing-function-docstring
+def main() -> None:
     app()
+
+
+if __name__ == "__main__":
+    main()

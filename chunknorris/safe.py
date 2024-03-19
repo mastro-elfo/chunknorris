@@ -1,6 +1,5 @@
 """Encrypt and decrypt files with password"""
 
-
 import typer
 
 from chunknorris import encryption

@@ -15,6 +15,7 @@ def split_extension(filename: str) -> tuple[str, str]:
     return ".".join(parts), extension
 
 
+# pylint: disable=too-many-arguments
 def get_output_filename(
     basename: str,
     extension: str,
@@ -29,6 +30,7 @@ def get_output_filename(
     )
 
 
+# pylint: disable=too-many-arguments
 def open_writer(
     basename: str,
     count: int,
@@ -39,6 +41,7 @@ def open_writer(
 ) -> TextIOWrapper:
     """Open file and write header"""
 
+    # pylint: disable=consider-using-with
     writer = open(
         get_output_filename(output_dir, basename, separator, count, extension),
         "w",
@@ -55,6 +58,7 @@ def close_writer(writer: TextIOWrapper, footer: str = ""):
     writer.close()
 
 
+# pylint: disable=too-many-arguments
 def remove_white_spaces(
     input_str: str,
     carriage_return: Optional[bool] = True,
